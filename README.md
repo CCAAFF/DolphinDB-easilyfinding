@@ -1,3 +1,2 @@
 
-
-just for DolphinDB 
+just for DolphinDB easily find and classification function
