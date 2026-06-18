@@ -4,10 +4,10 @@
 
 目前部分函数类别重构较为成功，其余内容正在打磨。
 
-网页： https://ccaaff.github.io/dolphindb-easilyfinding/dolphindb-funcs.html
+网页： https://ccaaff.github.io/DolphinDB-easilyfinding
 
 The practical theory I have learned through hands-on experience is as follows: Just like discovering the recipe for this heavenly delicacy by touching the banana with chili peppers, the same principle applies to the use of functions. Without the corresponding advanced function concept, one would not know about this usage method.
 Therefore, in order to better and more logically quickly overview and search for all the functions of DolphinDB, I compared the information in the published documents (all function pages on the document sidebar and the pages of DolphinDB function reference/functor classification). I supplemented the missing but published function content on the function classification pages and restructured the pages to facilitate users to quickly locate the target function. 
 At present, the reconfiguration of some function categories has been quite successful, while the remaining parts are still being refined.
 
-web： https://ccaaff.github.io/dolphindb-easilyfinding/dolphindb-funcs.html
+web： https://ccaaff.github.io/dolphindb-easilyfinding
