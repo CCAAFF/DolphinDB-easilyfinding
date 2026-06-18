@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>首页 · DolphinDB 函数手册</title>
+<style>
+:root{
+  --bg:#F7F6F2; --surface:#F9F8F5; --surface-alt:#FBFBF9; --surface-2:#FBFBF9; --border:#D4D1CA;
+  --text:#28251D; --muted:#7A7974; --faint:#BAB9B4;
+  --primary:#01696F; --primary-hover:#0C4E54;
+  --orig:#1A4FC4;        /* original function link (blue) */
+  --supp:#6B3FB5;        /* supplement function link (blue-purple) */
+  --th-bg:#EFEDE6; --row-alt:#F2F0EA;
+}
+html[data-theme="dark"]{
+  --bg:#171614; --surface:#1C1B19; --surface-alt:#201F1D; --border:#393836;
+  --text:#CDCCCA; --muted:#797876; --faint:#5A5957;
+  --primary:#4F98A3; --primary-hover:#227F8B;
+  --orig:#6FA0F5; --supp:#B08CF0;
+  --th-bg:#232220; --row-alt:#201F1D;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.topbar{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);
+  backdrop-filter:saturate(1.1) blur(4px)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:16px;color:var(--text);white-space:nowrap}
+.brand span{color:var(--primary)}
+.nav{display:flex;gap:4px;flex-wrap:wrap;flex:1}
+.nav a{padding:6px 12px;border-radius:8px;color:var(--muted);font-weight:500;font-size:14px}
+.nav a:hover{background:var(--surface-alt);color:var(--text);text-decoration:none}
+.nav a.active{background:var(--primary);color:#fff}
+.theme-btn{border:1px solid var(--border);background:var(--surface-alt);color:var(--muted);
+  border-radius:8px;padding:6px 10px;cursor:pointer;font-size:14px}
+.theme-btn:hover{color:var(--text)}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+h1.page-title{font-size:26px;margin:8px 0 4px;font-weight:700}
+.subtitle{color:var(--muted);margin:0 0 24px;font-size:14px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 22px;font-size:13.5px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px}
+.legend b{font-weight:600}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.dot.orig{background:var(--orig)} .dot.supp{background:var(--supp)}
+.fn{font-weight:500;white-space:nowrap}
+.fn.orig{color:var(--orig)} .fn.supp{color:var(--supp)}
+.fn .badge{display:inline-block;font-size:10px;line-height:1;padding:2px 4px;margin-left:3px;border-radius:4px;
+  background:var(--supp);color:#fff;vertical-align:middle;font-weight:600}
+/* overview groups */
+.search-box{width:100%;max-width:420px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;
+  background:var(--surface-alt);color:var(--text);font-size:14px;margin-bottom:20px}
+.search-box:focus{outline:none;border-color:var(--primary)}
+.group{margin-bottom:30px}
+.group>h2{font-size:19px;margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--primary);color:var(--text)}
+.group>h2 .count{font-size:13px;color:var(--muted);font-weight:500;margin-left:8px}
+.sub{margin:0 0 14px}
+.sub-name{font-weight:600;color:var(--text);margin:10px 0 6px;font-size:14.5px}
+.fn-list{display:flex;flex-wrap:wrap;gap:6px 14px;line-height:1.9}
+/* tables */
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:0 0 30px;overflow-x:auto}
+.tbl-card h3{margin:0 0 14px;font-size:17px;color:var(--text)}
+.tbl-intro{color:var(--muted);font-size:14px;margin:0 0 16px;line-height:1.7}
+table.grid{border-collapse:collapse;width:100%;font-size:13.5px}
+table.grid th,table.grid td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+table.grid th{background:var(--th-bg);font-weight:600;color:var(--text)}
+table.grid td{background:var(--surface-alt)}
+table.grid tr:nth-child(even) td{background:var(--row-alt)}
+table.grid .rowhdr{background:var(--th-bg);font-weight:600;white-space:nowrap}
+table.grid td[rowspan],table.grid th[rowspan]{vertical-align:middle}
+table.grid td .fn{display:inline}
+.footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--faint);font-size:13px;text-align:center}
+.hidden{display:none !important}
+
+/* ===== 统一顶部导航(对齐速查页 A 风格) ===== */
+.xnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);}
+.xnav-in{max-width:1180px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.xnav .xbrand{font-weight:700;font-size:14px;margin-right:10px;white-space:nowrap;color:var(--text);}
+.xnav .xbrand b{color:var(--primary);}
+.xnav a{padding:5px 11px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13.5px;text-decoration:none;}
+.xnav a:hover{background:var(--surface-alt,#FBFBF9);color:var(--text);}
+.xnav a.active{background:var(--primary);color:#fff;}
+.xnav .xsep{width:1px;height:18px;background:var(--border);margin:0 4px;display:inline-block;}
+
+.subhead{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);}
+.subhead-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.subhead .sh-title{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:var(--text);white-space:nowrap;}
+.subhead .sh-title .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;}
+.subhead .sh-title small{font-weight:500;color:var(--muted);font-size:12px;}
+.subhead .sh-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.subhead .icon-btn{cursor:pointer;border:1px solid var(--border);background:var(--surface-alt,#FBFBF9);color:var(--muted);
+            border-radius:8px;padding:7px 11px;font-size:13px;line-height:1;transition:.15s;}
+.subhead .icon-btn:hover{color:var(--primary);border-color:var(--primary);}
+
+table.grid td code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;background:var(--th-bg);color:var(--text);padding:1px 5px;border-radius:4px;border:1px solid var(--border);}
+
+/* ===== landing / 首页 ===== */
+.hero{background:linear-gradient(135deg,var(--surface) 0%,var(--surface-alt) 100%);
+  border:1px solid var(--border);border-radius:16px;padding:34px 32px;margin:0 0 30px;}
+.hero h1{font-size:30px;margin:0 0 10px;font-weight:800;letter-spacing:.3px;}
+.hero h1 .accent{color:var(--primary);}
+.hero .lead{color:var(--muted);font-size:15px;line-height:1.85;margin:0 0 6px;max-width:820px;}
+.hero .quote{margin:18px 0 0;padding:12px 18px;border-left:3px solid var(--primary);
+  background:var(--surface-alt);border-radius:0 8px 8px 0;color:var(--text);font-size:14.5px;line-height:1.8;}
+.hero .meta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
+.hero .pill{font-size:12.5px;color:var(--muted);background:var(--surface-alt);
+  border:1px solid var(--border);border-radius:999px;padding:5px 12px;}
+.cat{margin:0 0 26px;}
+.cat-head{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;padding-bottom:8px;
+  border-bottom:2px solid var(--primary);}
+.cat-head h2{font-size:18px;margin:0;font-weight:700;color:var(--text);}
+.cat-head .desc{font-size:13px;color:var(--muted);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+.card{display:block;border:1px solid var(--border);border-radius:12px;padding:16px 18px;
+  background:var(--surface);transition:.16s;text-decoration:none;}
+.card:hover{border-color:var(--primary);transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,.06);text-decoration:none;}
+.card .c-title{font-weight:700;font-size:15.5px;color:var(--text);margin:0 0 5px;}
+.card .c-sub{font-size:12.5px;color:var(--muted);line-height:1.6;}
+.card .c-arrow{color:var(--primary);font-size:13px;margin-top:8px;display:inline-block;}
+
+</style>
+<script>
+(function(){
+  var t=localStorage.getItem('ddb-theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  window.toggleTheme=function(){
+    var c=document.documentElement.getAttribute('data-theme');
+    var n=c==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',n);
+    localStorage.setItem('ddb-theme',n);
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.getElementById('themeBtn');
+  });
+})();
+</script>
+</head>
+<body>
+<div class="xnav"><div class="xnav-in">
+  <span class="xbrand">Dolphin<b>DB</b> 函数手册</span>
+  <a class="active" href="index.html">首页</a>
+  <a href="dolphindb-funcs.html">函数查找/总览</a>
+  <a href="catalog.html">目录总览</a>
+  <span class="xsep"></span>
+  <a href="paradigm.html">数据范式</a>
+  <a href="format.html">数据格式</a>
+  <a href="datatype.html">数据表种类</a>
+  <span class="xsep"></span>
+  <a href="basic-data.html">基础数据·字符串·时间</a>
+  <a href="operator-module.html">运算符·模块脚本</a>
+  <a href="advanced.html">进阶操作</a>
+  <a href="combined-ops.html">流数据·库表·运维</a>
+  <span class="xsep"></span>
+  <a href="series.html">系列函数组</a>
+  <a href="sql.html">SQL</a>
+  <a href="engine.html">引擎相关信息组</a>
+  <a href="finance.html">金融分析</a>
+  <a href="math.html">数学</a>
+  <a href="ml.html">机器学习</a>
+</div></div>
+<div class="subhead"><div class="subhead-in">
+  <div class="sh-title"><span class="dot"></span>首页 <small>项目介绍 · 全站目录</small></div>
+  <div class="sh-actions">
+    <button id="themeBtn" class="icon-btn" onclick="toggleTheme()">🌙 主题</button>
+  </div>
+</div></div>
+<div class="wrap">
+<div class="hero">
+  <h1>DolphinDB <span class="accent">函数速查手册</span></h1>
+  <p class="lead">依照官方文档重构的 DolphinDB 全函数总览。把文档侧边栏的「全部函数」与官方「函数分类」相互对照，补齐分类页缺失但已发布的函数，并按使用场景重新归类，帮助使用者快速定位目标函数。</p>
+  <p class="quote">告诉你「香蕉沾辣椒」之后，才知道有这道地狱美食的食谱。函数的使用同理 —— 如果没有对应高级函数的意识，就不知道还有这种用法。这正是本手册存在的意义：让你「看见」那些原本不知道的用法。</p>
+  <div class="meta">
+    <span class="pill">🔵 原版：官方原有函数</span>
+    <span class="pill">🟣 补充：分类页缺失但已发布（带「补」角标）</span>
+    <span class="pill">点击函数 → 官方文档</span>
+  </div>
+</div><div class="cat"><div class="cat-head"><h2>入口</h2><span class="desc">全站检索与目录</span></div><div class="cards"><a class="card" href="dolphindb-funcs.html"><div class="c-title">函数查找 / 总览</div><div class="c-sub">全站函数检索与分类入口</div><span class="c-arrow">进入 →</span></a><a class="card" href="catalog.html"><div class="c-title">目录总览</div><div class="c-sub">完整函数分组结构速查</div><span class="c-arrow">进入 →</span></a></div></div><div class="cat"><div class="cat-head"><h2>必要信息页</h2><span class="desc">使用函数前的前置概念</span></div><div class="cards"><a class="card" href="paradigm.html"><div class="c-title">数据范式</div><div class="c-sub">向量化 / SQL / 命令式等编程范式</div><span class="c-arrow">进入 →</span></a><a class="card" href="format.html"><div class="c-title">数据格式</div><div class="c-sub">标量 / 向量 / 矩阵 / 表 / 字典等</div><span class="c-arrow">进入 →</span></a><a class="card" href="datatype.html"><div class="c-title">数据表种类</div><div class="c-sub">内存表 / 分区表 / 流表等表类型</div><span class="c-arrow">进入 →</span></a></div></div><div class="cat"><div class="cat-head"><h2>持续打磨中</h2><span class="desc">已成型，内容仍在完善</span></div><div class="cards"><a class="card" href="basic-data.html"><div class="c-title">基础数据 · 字符串 · 时间</div><div class="c-sub">基础数据处理、字符串、时间处理</div><span class="c-arrow">进入 →</span></a><a class="card" href="operator-module.html"><div class="c-title">运算符 · 模块脚本</div><div class="c-sub">逻辑 / 关系运算符、模块与脚本运行时</div><span class="c-arrow">进入 →</span></a><a class="card" href="combined-ops.html"><div class="c-title">流数据 · 库表 · 运维</div><div class="c-sub">流表操作、库表管理、系统运维</div><span class="c-arrow">进入 →</span></a></div></div><div class="cat"><div class="cat-head"><h2>深入修正</h2><span class="desc">已做过深入校对与修正</span></div><div class="cards"><a class="card" href="series.html"><div class="c-title">系列函数组</div><div class="c-sub">m- / cum- / t- 等系列函数</div><span class="c-arrow">进入 →</span></a><a class="card" href="sql.html"><div class="c-title">SQL</div><div class="c-sub">SQL 查询、连接、分组、更新等</div><span class="c-arrow">进入 →</span></a><a class="card" href="advanced.html"><div class="c-title">进阶操作</div><div class="c-sub">元编程、高阶函数组</div><span class="c-arrow">进入 →</span></a><a class="card" href="engine.html"><div class="c-title">引擎相关信息组</div><div class="c-sub">流计算引擎与相关信息函数</div><span class="c-arrow">进入 →</span></a></div></div><div class="cat"><div class="cat-head"><h2>官方完整页</h2><span class="desc">与官方分类完整对齐</span></div><div class="cards"><a class="card" href="finance.html"><div class="c-title">金融分析</div><div class="c-sub">金融时序、因子、指标计算</div><span class="c-arrow">进入 →</span></a><a class="card" href="math.html"><div class="c-title">数学</div><div class="c-sub">数学运算与统计函数</div><span class="c-arrow">进入 →</span></a><a class="card" href="ml.html"><div class="c-title">机器学习</div><div class="c-sub">机器学习相关函数</div><span class="c-arrow">进入 →</span></a></div></div>
+<div class="footer">数据来源：用户整理的《DolphinDB 代码一览（缺失补充）》文档 · 函数链接指向 <a href="https://docs.dolphindb.cn/zh/" target="_blank" rel="noopener">DolphinDB 官方文档</a> · 在线访问 <a href="https://ccaaff.github.io/DolphinDB-easilyfinding" target="_blank" rel="noopener">GitHub Pages</a></div>
+</div>
+</body>
+</html>

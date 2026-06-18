@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SQL 速查 · DolphinDB 函数手册</title>
+<style>
+:root{
+  --bg:#F7F6F2; --surface:#F9F8F5; --surface-alt:#FBFBF9; --surface-2:#FBFBF9; --border:#D4D1CA;
+  --text:#28251D; --muted:#7A7974; --faint:#BAB9B4;
+  --primary:#01696F; --primary-hover:#0C4E54;
+  --orig:#1A4FC4; --supp:#6B3FB5;
+  --th-bg:#EFEDE6; --row-alt:#F2F0EA;
+}
+html[data-theme="dark"]{
+  --bg:#171614; --surface:#1C1B19; --surface-alt:#201F1D; --border:#393836;
+  --text:#CDCCCA; --muted:#797876; --faint:#5A5957;
+  --primary:#4F98A3; --primary-hover:#227F8B;
+  --orig:#6FA0F5; --supp:#B08CF0;
+  --th-bg:#232220; --row-alt:#201F1D;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px}
+h1.page-title{font-size:26px;margin:8px 0 4px;font-weight:700}
+.subtitle{color:var(--muted);margin:0 0 24px;font-size:14px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 22px;font-size:13.5px;color:var(--muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px}
+.legend b{font-weight:600}
+.search-box{width:100%;max-width:420px;padding:10px 14px;border:1px solid var(--border);border-radius:10px;
+  background:var(--surface-alt);color:var(--text);font-size:14px;margin-bottom:20px}
+.search-box:focus{outline:none;border-color:var(--primary)}
+.fn{font-weight:500;white-space:nowrap}
+.fn.orig{color:var(--orig)}
+.kw{font-weight:600;color:var(--primary);white-space:nowrap;font-family:"SF Mono",Consolas,Menlo,monospace;font-size:13px}
+code{font-family:"SF Mono",Consolas,Menlo,monospace;font-size:12.5px;background:var(--row-alt);
+  padding:1px 5px;border-radius:4px;color:var(--text)}
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:0 0 30px;overflow-x:auto}
+.tbl-card h3{margin:0 0 6px;font-size:17px;color:var(--text)}
+.tbl-intro{color:var(--muted);font-size:14px;margin:0 0 16px;line-height:1.7}
+table.grid{border-collapse:collapse;width:100%;font-size:13.5px}
+table.grid th,table.grid td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+table.grid th{background:var(--th-bg);font-weight:600;color:var(--text)}
+table.grid td{background:var(--surface-alt)}
+table.grid tr:nth-child(even) td{background:var(--row-alt)}
+table.grid .rowhdr{background:var(--th-bg);font-weight:600;white-space:nowrap}
+table.grid td[rowspan],table.grid th[rowspan]{vertical-align:middle}
+.footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--faint);font-size:13px;text-align:center}
+.hidden{display:none !important}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}
+.toc a{font-size:13px;padding:5px 11px;border:1px solid var(--border);border-radius:20px;color:var(--muted);background:var(--surface)}
+.toc a:hover{border-color:var(--primary);color:var(--primary);text-decoration:none}
+
+/* ===== 统一顶部导航(A 风格) ===== */
+.xnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);}
+.xnav-in{max-width:1180px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.xnav .xbrand{font-weight:700;font-size:14px;margin-right:10px;white-space:nowrap;color:var(--text);}
+.xnav .xbrand b{color:var(--primary);}
+.xnav a{padding:5px 11px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13.5px;text-decoration:none;}
+.xnav a:hover{background:var(--surface-alt,#FBFBF9);color:var(--text);}
+.xnav a.active{background:var(--primary);color:#fff;}
+.xnav .xsep{width:1px;height:18px;background:var(--border);margin:0 4px;display:inline-block;}
+
+.subhead{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);}
+.subhead-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.subhead .sh-title{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:var(--text);white-space:nowrap;}
+.subhead .sh-title .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;}
+.subhead .sh-title small{font-weight:500;color:var(--muted);font-size:12px;}
+.subhead .sh-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.subhead .icon-btn{cursor:pointer;border:1px solid var(--border);background:var(--surface-alt,#FBFBF9);color:var(--muted);
+            border-radius:8px;padding:7px 11px;font-size:13px;line-height:1;transition:.15s;}
+.subhead .icon-btn:hover{color:var(--primary);border-color:var(--primary);}
+</style>
+
+<script>
+(function(){
+  var t=localStorage.getItem('ddb-theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  window.toggleTheme=function(){
+    var c=document.documentElement.getAttribute('data-theme');
+    var n=c==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',n);
+    localStorage.setItem('ddb-theme',n);
+  };
+})();
+</script>
+
+</head>
+<body>
+<div class="xnav"><div class="xnav-in">
+  <span class="xbrand">Dolphin<b>DB</b> 函数手册</span>
+  <a href="index.html">首页</a>
+  <a href="dolphindb-funcs.html">函数查找/总览</a>
+  <a href="catalog.html">目录总览</a>
+  <span class="xsep"></span>
+  <a href="paradigm.html">数据范式</a>
+  <a href="format.html">数据格式</a>
+  <a href="datatype.html">数据表种类</a>
+  <span class="xsep"></span>
+  <a href="basic-data.html">基础数据·字符串·时间</a>
+  <a href="operator-module.html">运算符·模块脚本</a>
+  <a href="advanced.html">进阶操作</a>
+  <a href="combined-ops.html">流数据·库表·运维</a>
+  <span class="xsep"></span>
+  <a href="series.html">系列函数组</a>
+  <a class="active" href="sql.html">SQL</a>
+  <a href="engine.html">引擎相关信息组</a>
+  <a href="finance.html">金融分析</a>
+  <a href="math.html">数学</a>
+  <a href="ml.html">机器学习</a>
+</div></div>
+<div class="subhead"><div class="subhead-in">
+  <div class="sh-title"><span class="dot"></span>SQL <small>关键字 / 子句速查</small></div>
+  <div class="sh-actions">
+    <button id="themeBtn" class="icon-btn" onclick="toggleTheme()">🌙 主题</button>
+  </div>
+</div></div>
+<div class="wrap">
+<h1 class="page-title">SQL 关键字速查</h1><p class="subtitle">DolphinDB SQL 的 9 大模块关键字与子句，照搬整理文档内容。每个关键字附作用简述与可套用的示例代码。</p>
+<div class="legend"><span><b>关键字速查</b></span><span>共 9 大模块，覆盖 DolphinDB SQL 的查询、过滤、分组、排序、连接与诊断</span><span>示例代码可直接套用</span></div>
+<div class="toc"><a href="#t1">表 1 · 数据来源模块</a><a href="#t2">表 2 · WHERE 过滤条件模块</a><a href="#t3">表 3 · GROUP 分组与聚合模块</a><a href="#t4">表 4 · ORDER 排序与截取模块</a><a href="#t5">表 5 · 条件处理模块</a><a href="#t6">表 6 · 多查询组合与转换模块</a><a href="#t7">表 7 · 数据修改模块</a><a href="#t8">表 8 · JOIN 表连接模块</a><a href="#t9">表 9 · 性能诊断与其他模块</a></div>
+<div class="tbl-card" id="t1"><h3>表 1 · 数据来源模块</h3><p class="tbl-intro">select / exec / from 等核心查询入口，决定数据从哪来、以什么形式返回。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">select</span></td><td>核心查询，返回表。</td><td><code>select * from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">exec</span></td><td>返回向量/矩阵，不以表形式输出。</td><td><code>exec price from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">from</span></td><td>指定数据来源，是 select / exec 的搭配部分。</td><td><code>select * from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">partition</span></td><td>指定分区查询，减少扫描范围。</td><td><code>select * from t1 where partition(sym, 0 1)</code></td></tr><tr><td class="rowhdr"><span class="kw">map</span></td><td>分区独立执行再合并，适合分区间独立计算。</td><td><code>select * from t1 map</code></td></tr><tr><td class="rowhdr"><span class="kw">as</span></td><td>重命名。</td><td><code>select price as openprice from t1</code></td></tr></table></div>
+<div class="tbl-card" id="t2"><h3>表 2 · WHERE 过滤条件模块</h3><p class="tbl-intro">行级过滤条件，支持范围、集合、模式匹配、空值判断和子查询比较。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">where</span></td><td>基础行过滤。</td><td><code>select * from t1 where price &gt; 50</code></td></tr><tr><td class="rowhdr"><span class="kw">between</span></td><td>范围包含。</td><td><code>select * from t1 where price between 10 and 50</code></td></tr><tr><td class="rowhdr"><span class="kw">notBetween</span></td><td>范围排除。</td><td><code>select * from t1 where price notBetween 10 and 50</code></td></tr><tr><td class="rowhdr"><span class="kw">in</span></td><td>集合包含。</td><td><code>select * from t1 where sym in [`AAPL,`GOOG]</code></td></tr><tr><td class="rowhdr"><span class="kw">notIn</span></td><td>集合排除。</td><td><code>select * from t1 where sym notIn [`AAPL,`GOOG]</code></td></tr><tr><td class="rowhdr"><span class="kw">like</span></td><td>字符串模式匹配（? 代表一个未知字符、% 代表零到多个字符）。</td><td><code>select * from t1 where sym like &quot;?A%&quot;</code></td></tr><tr><td class="rowhdr"><span class="kw">notLike</span></td><td>字符串模式排除。</td><td><code>select * from t1 where sym notLike &quot;?A%&quot;</code></td></tr><tr><td class="rowhdr"><span class="kw">is null</span></td><td>判断空值。</td><td><code>select * from t1 where price is null</code></td></tr><tr><td class="rowhdr"><span class="kw">exists</span></td><td>子查询存在性判断。</td><td><code>select * from t1 where exists (select * from t2 where t2.sym=t1.sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">any</span></td><td>与子查询比较，任意一个满足。</td><td><code>select * from t1 where price &gt; any (exec price from t2)</code></td></tr><tr><td class="rowhdr"><span class="kw">all</span></td><td>与子查询比较，全部满足。</td><td><code>select * from t1 where price &gt; all (exec price from t2)</code></td></tr></table></div>
+<div class="tbl-card" id="t3"><h3>表 3 · GROUP 分组与聚合模块</h3><p class="tbl-intro">分组聚合与窗口分析，context by 保留原始行数适合窗口类计算。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">group by</span></td><td>常规分组聚合。</td><td><code>select avg(price) as avgPrice from t1 group by sym</code></td></tr><tr><td class="rowhdr"><span class="kw">context by</span></td><td>分组但保留原始行数，适合窗口类计算。</td><td><code>select sym, price, mavg(price,3) as mp from t1 context by sym</code></td></tr><tr><td class="rowhdr"><span class="kw">cgroup by</span></td><td>累计分组，对有序数据做累计聚合。</td><td><code>select cumsum(qty) as cumQty from t1 cgroup by sym</code></td></tr><tr><td class="rowhdr"><span class="kw">having</span></td><td>聚合后再过滤。</td><td><code>select sym, avg(price) as avgPrice from t1 group by sym having avg(price) &gt; 50</code></td></tr><tr><td class="rowhdr"><span class="kw">interval</span></td><td>按时间区间分组。</td><td><code>select sum(qty) from t1 group by interval(date, 1d)</code></td></tr><tr><td class="rowhdr"><span class="kw">over</span></td><td>窗口/分析函数。</td><td><code>select sym, price, rank(price) over(partition by sym) as rk from t1</code></td></tr></table></div>
+<div class="tbl-card" id="t4"><h3>表 4 · ORDER 排序与截取模块</h3><p class="tbl-intro">排序、取前 N 行、限制行数、随机抽样与去重。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">order by</span></td><td>排序。</td><td><code>select * from t1 order by price desc</code></td></tr><tr><td class="rowhdr"><span class="kw">top</span></td><td>取前 n 行。</td><td><code>select top 5 * from t1 order by price desc</code></td></tr><tr><td class="rowhdr"><span class="kw">limit</span></td><td>限制返回行数。</td><td><code>select * from t1 limit 10</code></td></tr><tr><td class="rowhdr"><span class="kw">sample</span></td><td>随机抽样。</td><td><code>select * from t1 sample 10</code></td></tr><tr><td class="rowhdr"><span class="kw">distinct</span></td><td>去重。</td><td><code>select distinct sym from t1</code></td></tr></table></div>
+<div class="tbl-card" id="t5"><h3>表 5 · 条件处理模块</h3><p class="tbl-intro">条件分支与空值处理。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">case</span></td><td>条件分支。</td><td><code>select sym, case when price&gt;50 then &quot;high&quot; else &quot;low&quot; end as tag from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">coalesce</span></td><td>返回第一个非空值。</td><td><code>select sym, coalesce(price, 0) as price2 from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">nullIf</span></td><td>两值相等则返回 NULL。</td><td><code>select sym, nullIf(qty, 0) as qty2 from t1</code></td></tr></table></div>
+<div class="tbl-card" id="t6"><h3>表 6 · 多查询组合与转换模块</h3><p class="tbl-intro">CTE、并集、透视与逆透视。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">with</span></td><td>CTE 公用表表达式。</td><td><code>with tmp as (select * from t1 where price&gt;50) select * from tmp</code></td></tr><tr><td class="rowhdr"><span class="kw">union</span></td><td>合并查询结果并去重。</td><td><code>select sym from t1 union select sym from t2</code></td></tr><tr><td class="rowhdr"><span class="kw">union all</span></td><td>合并查询结果但不去重。</td><td><code>select sym from t1 union all select sym from t2</code></td></tr><tr><td class="rowhdr"><span class="kw">pivot by</span></td><td>行列转换，透视表。</td><td><code>select avg(price) from t1 pivot by date, sym</code></td></tr><tr><td class="rowhdr"><span class="kw">unpivot</span></td><td>列转行，是 pivot by 逆操作。</td><td><code>unpivot t1</code></td></tr></table></div>
+<div class="tbl-card" id="t7"><h3>表 7 · 数据修改模块</h3><p class="tbl-intro">插入、更新、删除与表结构 / 库表的创建删除。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">insert into</span></td><td>插入数据。</td><td><code>insert into t1 values(`AAPL, 100.5, 200, 2026.01.01)</code></td></tr><tr><td class="rowhdr"><span class="kw">update</span></td><td>更新数据。</td><td><code>update t1 set price=price*1.1 where sym=`AAPL</code></td></tr><tr><td class="rowhdr"><span class="kw">delete</span></td><td>删除数据。</td><td><code>delete from t1 where qty=0</code></td></tr><tr><td class="rowhdr"><span class="kw">alter</span></td><td>修改表结构。</td><td><code>alter table t1 add note STRING</code></td></tr><tr><td class="rowhdr"><span class="kw">create</span></td><td>创建表/数据库。</td><td><code>create table t3(sym SYMBOL, price DOUBLE, qty INT, date DATE)</code></td></tr><tr><td class="rowhdr"><span class="kw">drop</span></td><td>删除表/数据库。</td><td><code>drop table t3</code></td></tr></table></div>
+<div class="tbl-card" id="t8"><h3>表 8 · JOIN 表连接模块</h3><p class="tbl-intro">DolphinDB 丰富的连接族：内/左/全/交叉/等值/时序/窗口/前缀/半连接等。</p><table class="grid"><tr><th>关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">inner join / ej</span></td><td>内连接，返回两表中匹配的行。</td><td><code>select * from t1 inner join t2 on t1.sym=t2.sym</code><br><code>select * from ej(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">lj / left join</span></td><td>左连接，保留左表所有行。</td><td><code>select * from lj(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">fj / full join</span></td><td>全连接，保留两表所有行。</td><td><code>select * from fj(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">cj / cross join</span></td><td>笛卡尔积连接。</td><td><code>select * from cj(t1, t2)</code></td></tr><tr><td class="rowhdr"><span class="kw">ej / equi join</span></td><td>等值连接，按等值条件匹配。</td><td><code>select * from t1 equi join t2 on t1.sym=t2.sym</code><br><code>select * from ej(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">aj / asof join</span></td><td>常用于最近时间戳向前匹配，时序专用。</td><td><code>select * from t1 asof join t2 on t1.sym=t2.sym</code><br><code>select * from aj(t1, t2, `sym`date)</code></td></tr><tr><td class="rowhdr"><span class="kw">wj / pwj</span></td><td>用于时间窗口内的关联和聚合连接。</td><td><code>select * from wj(t1, t2, 0:5, &lt;[sum(qty)]&gt;, `sym`date)</code></td></tr><tr><td class="rowhdr"><span class="kw">pj / prefix join</span></td><td>前缀匹配连接。</td><td><code>select * from pj(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">lsj</span></td><td>左半连接，只保留左表中有匹配的行。</td><td><code>select * from lsj(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">sej</span></td><td>等值半连接，强调按等值条件匹配。</td><td><code>select * from sej(t1, t2, `sym)</code></td></tr><tr><td class="rowhdr"><span class="kw">right join</span></td><td>右连接，保留右表所有行。</td><td><code>select * from t1 right join t2 on t1.sym=t2.sym</code></td></tr></table></div>
+<div class="tbl-card" id="t9"><h3>表 9 · 性能诊断与其他模块</h3><p class="tbl-intro">执行计划、查询追踪与运行 / 完成查询监控。</p><table class="grid"><tr><th>工具/关键字</th><th>作用简述</th><th>例子/备注</th></tr><tr><td class="rowhdr"><span class="kw">HINT_EXPLAIN</span></td><td>查看执行计划。</td><td><code>select [HINT_EXPLAIN] * from t1</code></td></tr><tr><td class="rowhdr"><span class="kw">SQL Trace / setTraceMode</span></td><td>开启追踪。</td><td><code>setTraceMode(1)</code></td></tr><tr><td class="rowhdr"><span class="kw">getTraces / viewTraceInfo</span></td><td>查看追踪信息。</td><td><code>getTraces()</code><br><code>viewTraceInfo()</code></td></tr><tr><td class="rowhdr"><span class="kw">getRunningQueries</span></td><td>查看运行中查询。</td><td><code>getRunningQueries()</code></td></tr><tr><td class="rowhdr"><span class="kw">getCompletedQueries</span></td><td>查看已完成查询。</td><td><code>getCompletedQueries()</code></td></tr><tr><td class="rowhdr"><span class="kw">getQueryStatus</span></td><td>查看指定查询状态。</td><td><code>getQueryStatus(&lt;queryId&gt;)</code></td></tr></table></div>
+<div class="footer">数据来源：用户整理的《DolphinDB 代码一览（缺失补充）》文档 · 关键字/函数链接指向 <a href="https://docs.dolphindb.cn/zh/" target="_blank" rel="noopener">DolphinDB 官方文档</a></div>
+</div>
+</body>
+</html>
