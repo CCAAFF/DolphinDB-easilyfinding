@@ -31,7 +31,9 @@
 
 | 页面 | 说明 |
 | --- | --- |
+| **首页** | 项目介绍与全站目录 |
 | **函数查找 / 总览** | 全站函数检索与分类入口 |
+| **目录总览** | 完整函数分组结构速查 |
 
 ### 📘 必要信息页(理解前置概念)
 
@@ -65,6 +67,23 @@
 - **金融分析**
 - **数学**
 - **机器学习**
+
+---
+
+## 更新日志
+
+### V1.0.1 · 2026-06-19
+- 加入 [首页](index.html)(项目介绍 + 全站目录入口)。
+
+### V1.0.0 · 2026-06-18
+完整页面补充至 15 个：
+[函数查找/总览](dolphindb-funcs.html) · [目录总览](catalog.html) · [数据范式](paradigm.html) · [数据格式](format.html) · [数据表种类](datatype.html) · [基础数据·字符串·时间](basic-data.html) · [运算符·模块脚本](operator-module.html) · [进阶操作](advanced.html) · [流数据·库表·运维](combined-ops.html) · [系列函数组](series.html) · [SQL](sql.html) · [引擎相关信息组](engine.html) · [金融分析](finance.html) · [数学](math.html) · [机器学习](ml.html)。
+
+### V0.0.2 · 2026-06-18
+- 加入 [数据范式](paradigm.html) · [数据格式](format.html) 两个静态页面。
+
+### V0.0.1 · 2026-06-17
+- 首次尝试用网页格式展示 [函数查找/总览](dolphindb-funcs.html) · [目录总览](catalog.html) 两个页面。
 
 ---
 
