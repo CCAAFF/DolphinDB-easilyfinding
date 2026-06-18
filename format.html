@@ -75,6 +75,25 @@ table.grid td[rowspan],table.grid th[rowspan]{vertical-align:middle}
 table.grid td .fn{display:inline}
 .footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--border);color:var(--faint);font-size:13px;text-align:center}
 .hidden{display:none !important}
+/* ===== 统一顶部导航(A 风格) ===== */
+.xnav{position:sticky;top:0;z-index:50;background:var(--surface);border-bottom:1px solid var(--border);}
+.xnav-in{max-width:1180px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.xnav .xbrand{font-weight:700;font-size:14px;margin-right:10px;white-space:nowrap;color:var(--text);}
+.xnav .xbrand b{color:var(--primary);}
+.xnav a{padding:5px 11px;border-radius:8px;color:var(--muted);font-weight:500;font-size:13.5px;text-decoration:none;}
+.xnav a:hover{background:var(--surface-alt,#FBFBF9);color:var(--text);}
+.xnav a.active{background:var(--primary);color:#fff;}
+.xnav .xsep{width:1px;height:18px;background:var(--border);margin:0 4px;display:inline-block;}
+
+.subhead{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);}
+.subhead-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.subhead .sh-title{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;color:var(--text);white-space:nowrap;}
+.subhead .sh-title .dot{width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;}
+.subhead .sh-title small{font-weight:500;color:var(--muted);font-size:12px;}
+.subhead .sh-actions{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.subhead .icon-btn{cursor:pointer;border:1px solid var(--border);background:var(--surface-alt,#FBFBF9);color:var(--muted);
+            border-radius:8px;padding:7px 11px;font-size:13px;line-height:1;transition:.15s;}
+.subhead .icon-btn:hover{color:var(--primary);border-color:var(--primary);}
 </style>
 <script>
 (function(){
@@ -85,20 +104,36 @@ table.grid td .fn{display:inline}
     var n=c==='dark'?'light':'dark';
     document.documentElement.setAttribute('data-theme',n);
     localStorage.setItem('ddb-theme',n);
-    var b=document.getElementById('themeBtn'); if(b) b.textContent=n==='dark'?'☀ 浅色':'🌙 深色';
   };
-  document.addEventListener('DOMContentLoaded',function(){
-    var b=document.getElementById('themeBtn');
-    if(b) b.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀ 浅色':'🌙 深色';
-  });
 })();
 </script>
 </head>
 <body>
-<div class="topbar"><div class="topbar-in">
-  <div class="brand">Dolphin<span>DB</span> 函数手册</div>
-  <nav class="nav"><a class="navlink" href="dolphindb-funcs.html">函数查找</a><a class="navlink" href="index.html">目录总览</a><a class="navlink" href="paradigm.html">数据范式</a><a class="navlink active" href="format.html">数据格式</a><a class="navlink" href="series.html">系列函数组</a></nav>
-  <button id="themeBtn" class="theme-btn" onclick="toggleTheme()">🌙 深色</button>
+<div class="xnav"><div class="xnav-in">
+  <span class="xbrand">Dolphin<b>DB</b> 函数手册</span>
+  <a href="dolphindb-funcs.html">函数查找/总览</a>
+  <span class="xsep"></span>
+  <a href="paradigm.html">数据范式</a>
+  <a class="active" href="format.html">数据格式</a>
+  <a href="datatype.html">数据表种类</a>
+  <span class="xsep"></span>
+  <a href="basic-data.html">基础数据·字符串·时间</a>
+  <a href="operator-module.html">运算符·模块脚本</a>
+  <a href="advanced.html">进阶操作</a>
+  <a href="combined-ops.html">流数据·库表·运维</a>
+  <span class="xsep"></span>
+  <a href="series.html">系列函数组</a>
+  <a href="sql.html">SQL</a>
+  <a href="engine.html">引擎相关信息组</a>
+  <a href="finance.html">金融分析</a>
+  <a href="math.html">数学</a>
+  <a href="ml.html">机器学习</a>
+</div></div>
+<div class="subhead"><div class="subhead-in">
+  <div class="sh-title"><span class="dot"></span>数据格式 <small>DolphinDB 数据类型与格式速查</small></div>
+  <div class="sh-actions">
+    <button id="themeBtn" class="icon-btn" onclick="toggleTheme()">🌙 主题</button>
+  </div>
 </div></div>
 <div class="wrap">
 <h1 class="page-title">数据格式</h1><p class="subtitle">DolphinDB 全部数据类型与格式速查（表三），照搬整理文档内容。</p><div class="tbl-card"><h3>表 3 · DolphinDB 数据格式</h3><table class="grid"><tr><th>分类</th><th>名称</th><th>中文名称</th><th>ID</th><th>举例或格式</th><th>字节数</th></tr><tr><td>VOID  （声明）</td><td>VOID</td><td>空值或者叫声明</td><td>0</td><td>NULL</td><td>1</td></tr><tr><td>LOGICAL（逻辑）</td><td>BOOL</td><td>逻辑对错</td><td>1</td><td>TRUE  FALSE</td><td>1</td></tr><tr><td rowspan="5">INTEGRAL（必要）</td><td>CHAR</td><td>单个字符</td><td>2</td><td>‘a’, ‘0’</td><td>1</td></tr><tr><td>SHORT</td><td>小范围的整数值</td><td>3</td><td>2^-15—2^15-1</td><td>2</td></tr><tr><td>INT</td><td>普通范围整数</td><td>4</td><td>2^-31—2^31-1</td><td>4</td></tr><tr><td>LONG</td><td>大范围整数</td><td>5</td><td>2^-63—2^63-3</td><td>8</td></tr><tr><td>COMPRESSED</td><td>压缩数据（不可读）</td><td>26</td><td>\</td><td>1</td></tr><tr><td rowspan="10">TEMPORAL（时间）</td><td>MONTH</td><td>年份 月份信息（月份）</td><td>7</td><td>YYYY.MM</td><td>4</td></tr><tr><td>DATE</td><td>年份 月份 日期信息   （日期）</td><td>6</td><td>YYYY.MM.dd</td><td>4</td></tr><tr><td>DATEHOUR</td><td>年份 月份 日期 小时（时间小时）</td><td>28</td><td>YYYY.MM.ddTHH</td><td>4</td></tr><tr><td>DATETIME</td><td>年份 月份 日期 小时 分钟秒信息（日期时间）</td><td>11</td><td>YYYY.MM.ddTHH:mm:ss</td><td>4</td></tr><tr><td>TIMESTAMP</td><td>年份 月份 日期 小时 分钟秒 毫秒信息（时间戳）</td><td>12</td><td>YYYY.MM.ddTHH:mm:ss：ssss</td><td>8</td></tr><tr><td>NANOTIMESTAMP</td><td>年份 月份 日期 小时 分钟秒 纳秒（纳秒时间戳）</td><td>14</td><td>YYYY.MM.ddTHH:mm:ss.nnnnnnnnn</td><td>8</td></tr><tr><td>MINUTE</td><td>小时 分钟m信息（分钟）</td><td>9</td><td>HH:mm(m)</td><td>4</td></tr><tr><td>SECOND</td><td>小时 分钟 秒信息（秒）</td><td>10</td><td>HH:mm:ss</td><td>4</td></tr><tr><td>TIME</td><td>小时 分钟 秒 毫秒信息（时间）</td><td>8</td><td>HH:mm:ss:sss</td><td>4</td></tr><tr><td>NANOTIME</td><td>小时 分钟 秒 纳秒信息（纳秒）</td><td>13</td><td>HH:mm:ss.nnnnnnnnn</td><td>8</td></tr><tr><td rowspan="2">FLOATING（浮点小时）</td><td>FLOAT</td><td>单精浮点</td><td>15</td><td>2.1</td><td>4</td></tr><tr><td>DOUBLE</td><td>双精浮点</td><td>16</td><td>2.1</td><td>8</td></tr><tr><td rowspan="3">LITERAL（字符）</td><td>SYMBOL</td><td>唯一标识用于快速查找</td><td>17</td><td>应用于其他的类型</td><td>4</td></tr><tr><td>STRING</td><td>字符串</td><td>18</td><td>“Hello”</td><td>不超过 65,535</td></tr><tr><td>BLOB</td><td>存储大量二进制数据的特殊数据类型</td><td>32</td><td>\</td><td>&nbsp;</td></tr><tr><td rowspan="4">BINARY（二进制）</td><td>INT128</td><td>存储 128 位整数的数据类型。</td><td>31</td><td>e1671797c52e15f763380b45e841ec32</td><td>16</td></tr><tr><td>UUID</td><td>标识信息的标准格式</td><td>19</td><td>5d212a78-cc48-e3b1-4235-b4d91473ee87</td><td>16</td></tr><tr><td>IPADDR</td><td>IP 地址</td><td>30</td><td>192.168.1.13</td><td>16</td></tr><tr><td>POINT</td><td>地理坐标点</td><td>35</td><td>(117.60972, 24.118418)</td><td>16</td></tr><tr><td rowspan="6">SYSTEM（系统（用于中间步骤,最好不要认为写入））</td><td>FUNCTIONDEF</td><td>函数的定义</td><td>20</td><td>def f1(a,b) {return a+b;}</td><td>&nbsp;</td></tr><tr><td>HANDLE</td><td>某个资源或对象的引用</td><td>21</td><td>file handle, socket handle, and db handle</td><td>&nbsp;</td></tr><tr><td>CODE</td><td>代码块或脚本</td><td>22</td><td>&lt;1+2&gt;</td><td>&nbsp;</td></tr><tr><td>DATASOURCE</td><td>数据源的定义</td><td>23</td><td>\\</td><td>&nbsp;</td></tr><tr><td>RESOURCE</td><td>系统资源</td><td>24</td><td>\\</td><td>&nbsp;</td></tr><tr><td>DURATION</td><td>持续时间</td><td>36</td><td>1s, 3M, 5y, 200ms</td><td>4</td></tr><tr><td rowspan="2">MIXED（混合）</td><td>ANY</td><td>任意数据类型</td><td>25</td><td>(1,2,3)</td><td>&nbsp;</td></tr><tr><td>ANY DICTIONARY</td><td>字典形式任意数据类型</td><td>27</td><td>{a:1,b:2}</td><td>&nbsp;</td></tr><tr><td>OTHER（其他）</td><td>COMPLEX</td><td>负数</td><td>34</td><td>2.3+4.0i</td><td>16</td></tr><tr><td rowspan="3">DECIMAL（小数）</td><td>DECIMAL32(S)</td><td>9 位精度浮点数字</td><td>37</td><td>3.1415926$DECIMAL32(3)</td><td>4</td></tr><tr><td>DECIMAL64(S)</td><td>18 位精度浮点数字</td><td>38</td><td>3.1415926$DECIMAL64(3), , 3.141P</td><td>8</td></tr><tr><td>DECIMAL128(S)</td><td>38 位精度浮点数字</td><td>39</td><td>3.1415926$DECIMAL128(3)</td><td>16</td></tr><tr><td>ARRAY</td><td>XXXX [ ]</td><td>表示一组相同类型的元素</td><td>X+64</td><td>INT [ ]</td><td>&nbsp;</td></tr></table><p class="tbl-intro">注释：; 时间分隔符　. 日期分隔符　yyyy 年份4位置　YYYY 年份4位置（周-年时间）　yy 年份2位　MM 月份2位　MMM 月份字母3位　dd 日期　T 日期时间连接符　HH24小时2位　hh12小时2位　mm 分钟2位　ss 秒2位　aa 上下午2位（AM/PM）　SSS 毫秒3位　nnnnnn 微秒6位　nnnnnnnnn 纳秒9位</p></div>
