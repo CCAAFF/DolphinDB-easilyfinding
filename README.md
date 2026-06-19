@@ -2,7 +2,7 @@
 
 > 一套依照官方文档重构的 DolphinDB 全函数总览,按使用场景重新归类,帮助使用者快速定位目标函数。
 >
-> 在线访问:**[ccaaff.github.io/DolphinDB-easilyfinding](https://ccaaff.github.io/DolphinDB-easilyfinding)**
+> 在线访问:**[ccaaff.github.io/DolphinDB_Function_Quick_Reference_Guide](https://ccaaff.github.io/DolphinDB_Function_Quick_Reference_Guide)**
 
 ---
 
@@ -71,6 +71,9 @@
 ---
 
 ## 更新日志
+
+### V1.0.2 · 2026-06-19
+- 更新名称为：DolphinDB Easily-Finding · 函数速查手册
 
 ### V1.0.1 · 2026-06-19
 - 加入 [首页](index.html)(项目介绍 + 全站目录入口)。
